@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utello Influencer Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b12;--bg-card:#0f1320;--bg-in:#151a28;--bg-s:#1a2035;--bg-s2:#1e2640;
+  --b:rgba(255,255,255,0.07);--bm:rgba(255,255,255,0.13);--bh:rgba(255,255,255,0.22);
+  --t1:#eef0ff;--t2:#7a86a8;--t3:#3e4a68;
+  --ac:#ff5a5f;--acs:rgba(255,90,95,0.11);--acg:rgba(255,90,95,0.28);
+  --tl:#00d4aa;--tls:rgba(0,212,170,0.09);
+  --am:#f5a623;--ams:rgba(245,166,35,0.10);
+  --fn:'Inter',sans-serif;--dp:'Space Grotesk',sans-serif;
+  --r:10px;--rl:16px;--rxl:22px;--e:0.22s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fn);background:var(--bg);color:var(--t1);min-height:100vh;font-size:15px;line-height:1.6}
+.hdr{max-width:860px;margin:0 auto;padding:32px 20px 0;text-align:center}
+.lr{display:flex;align-items:center;justify-content:center;gap:13px;margin-bottom:9px}
+.lb{width:46px;height:46px;border-radius:11px;background:#0d1120;border:1px solid var(--bm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand{font-family:var(--dp);font-size:30px;font-weight:800;letter-spacing:-.8px;color:var(--t1)}
+.brand span{color:var(--ac)}
+.tag{font-size:12.5px;color:var(--t2);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:30px}
+.tabs{display:flex;background:var(--bg-card);border:1px solid var(--b);border-radius:var(--rxl);padding:5px;max-width:500px;margin:0 auto 26px}
+.tab{flex:1;padding:11px 18px;border:none;background:transparent;color:var(--t2);font-family:var(--fn);font-size:13.5px;font-weight:500;cursor:pointer;border-radius:calc(var(--rxl) - 4px);transition:all var(--e);white-space:nowrap}
+.tab.on{background:var(--ac);color:#fff;font-weight:700;box-shadow:0 4px 18px var(--acg)}
+.tab:not(.on):hover{color:var(--t1);background:var(--bg-s)}
+.app{max-width:860px;margin:0 auto;padding:0 16px 48px}
+.panel{display:none;animation:fu .28s ease}
+.panel.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--bg-card);border:1px solid var(--b);border-radius:var(--rl);padding:22px 22px 18px;margin-bottom:14px}
+.sl{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--t2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sl::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--ac);flex-shrink:0}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px}
+.fg{display:flex;flex-direction:column;gap:7px}
+label{font-size:12px;font-weight:600;color:var(--t2);letter-spacing:.03em}
+input[type="number"],select{background:var(--bg-in);border:1px solid var(--b);border-radius:var(--r);padding:11px 13px;color:var(--t1);font-family:var(--fn);font-size:14px;width:100%;outline:none;appearance:none;-webkit-appearance:none;transition:border-color var(--e),box-shadow var(--e)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%237a86a8' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;cursor:pointer}
+select option{background:#1a2035}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--acs)}
+input::placeholder{color:var(--t3)}
+.hint{font-size:11px;color:var(--t3);margin-top:1px}
+.hint.ok{color:var(--tl)}
+.tog{display:flex;align-items:center;justify-content:space-between;background:var(--bg-in);border:1px solid var(--b);border-radius:var(--r);padding:11px 14px;margin-top:14px}
+.tl1{font-size:14px;color:var(--t1)}
+.tl2{font-size:11px;color:var(--t2);margin-top:1px}
+.sw{position:relative;width:44px;height:24px;flex-shrink:0}
+.sw input{opacity:0;width:0;height:0}
+.tk{position:absolute;inset:0;background:var(--bg-s);border-radius:100px;cursor:pointer;transition:background var(--e);border:1px solid var(--bm)}
+.tk::after{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;background:var(--t2);border-radius:50%;transition:all var(--e)}
+.sw input:checked+.tk{background:var(--ac);border-color:var(--ac)}
+.sw input:checked+.tk::after{left:23px;background:#fff}
+.btn-p{background:var(--ac);border:none;border-radius:var(--r);color:#fff;font-family:var(--dp);font-size:14.5px;font-weight:700;padding:13px 26px;cursor:pointer;width:100%;margin-top:10px;transition:all var(--e)}
+.btn-p:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 8px 24px var(--acg)}
+.btn-p:active{transform:translateY(0)}
+.btn-t{background:var(--tls);border:1px solid rgba(0,212,170,.22);border-radius:var(--r);color:var(--tl);font-family:var(--dp);font-size:13.5px;font-weight:700;padding:11px 22px;cursor:pointer;transition:all var(--e);display:inline-flex;align-items:center;gap:8px}
+.btn-t:hover{background:rgba(0,212,170,.16);transform:translateY(-1px)}
+.btn-g{background:transparent;border:1px solid var(--bm);border-radius:var(--r);color:var(--t2);font-family:var(--fn);font-size:13px;font-weight:500;padding:9px 16px;cursor:pointer;transition:all var(--e);display:inline-flex;align-items:center;gap:7px}
+.btn-g:hover{color:var(--t1);border-color:var(--bh);background:var(--bg-s)}
+.hide{display:none!important}
+.rw{animation:fu .35s cubic-bezier(0.4,0,0.2,1)}
+.rcs{background:var(--bg-card);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-bottom:14px}
+.rct{padding:20px 22px 16px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.rctt{font-family:var(--dp);font-size:15px;font-weight:700}
+.rcb{padding:22px}
+.erh{background:var(--bg-s);border-radius:var(--rl);padding:28px 20px 20px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.erh::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:180px;height:180px;background:var(--acs);border-radius:50%;filter:blur(40px);pointer-events:none}
+.erb{font-family:var(--dp);font-size:56px;font-weight:800;letter-spacing:-2.5px;color:var(--t1);line-height:1;position:relative}
+.ers{font-size:13px;color:var(--t2);margin-top:5px}
+.qb{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:100px;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-top:14px}
+.qp{background:rgba(239,68,68,.14);color:#f87171;border:1px solid rgba(239,68,68,.22)}
+.qa{background:rgba(245,158,11,.14);color:#fbbf24;border:1px solid rgba(245,158,11,.22)}
+.qg{background:rgba(34,197,94,.14);color:#4ade80;border:1px solid rgba(34,197,94,.22)}
+.qe{background:rgba(129,140,248,.14);color:#a5b4fc;border:1px solid rgba(129,140,248,.22)}
+.qv{background:var(--acs);color:var(--ac);border:1px solid var(--acg)}
+.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:11px;margin-bottom:16px}
+.sb{background:var(--bg-s);border:1px solid var(--b);border-radius:var(--r);padding:13px 15px}
+.sbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:5px}
+.sbv{font-family:var(--dp);font-size:18px;font-weight:700;color:var(--t1)}
+.bw{margin-bottom:16px}
+.bt{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:9px}
+.btr{height:7px;background:var(--bg-s2);border-radius:100px;overflow:hidden;margin-bottom:6px}
+.bf{height:100%;border-radius:100px;width:0%;transition:width .9s cubic-bezier(0.4,0,0.2,1)}
+.bls{display:flex;justify-content:space-between;font-size:10.5px;color:var(--t3)}
+.ins{background:var(--tls);border:1px solid rgba(0,212,170,.14);border-radius:var(--r);padding:13px 15px;font-size:13.5px;color:var(--tl);line-height:1.65;margin-bottom:16px}
+.xr{display:flex;justify-content:center;padding:4px 0 10px}
+.rh{background:var(--bg-s);border:1px solid var(--bm);border-radius:var(--rl);padding:26px 22px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden}
+.rh::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(0,212,170,.07) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.rhl{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:4px}
+.rhb{font-family:var(--dp);font-size:54px;font-weight:800;letter-spacing:-2px;color:var(--tl);line-height:1;position:relative}
+.rhs{font-size:12.5px;color:var(--t2);margin-top:6px}
+.rhv{font-size:11px;color:var(--t3);margin-top:8px}
+.bdt{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:10px}
+.bdd{width:100%;border-collapse:collapse;margin-bottom:16px}
+.bdd tr{border-bottom:1px solid rgba(255,255,255,.04)}
+.bdd tr:last-child{border-bottom:none}
+.bdd td{padding:8px 4px;font-size:13px;vertical-align:middle}
+.ds{color:var(--t3);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;width:28px}
+.dn{color:var(--t2)}
+.dv{color:var(--t1);font-weight:600;text-align:right}
+.dr{color:var(--tl);font-weight:700;text-align:right}
+.mpw{background:var(--bg-s);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;border:1px solid var(--b)}
+.mpr{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04)}
+.mpr:last-child{border-bottom:none;font-weight:700}
+.mpl{color:var(--t2)}
+.mpr:last-child .mpl{color:var(--tl)}
+.mpv{font-weight:600;color:var(--t1)}
+.mpr:last-child .mpv{color:var(--tl);font-size:15px}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;background:var(--bg-s);border-radius:var(--r);border:1px solid var(--b);overflow:hidden}
+.di{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.04);font-size:13px}
+.di:nth-child(even){border-right:none}
+.di:nth-last-child(-n+2){border-bottom:none}
+.dik{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:3px}
+.div2{color:var(--t1);font-weight:600}
+.disc{background:var(--bg-s);border-radius:var(--r);padding:12px 15px;font-size:12px;color:var(--t3);line-height:1.65;border-left:2px solid var(--bh);margin-top:6px}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--tl);color:#04201a;font-size:13.5px;font-weight:800;padding:12px 26px;border-radius:100px;z-index:9999;transition:transform .32s cubic-bezier(0.4,0,0.2,1);pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:580px){.erb{font-size:42px}.rhb{font-size:40px}.dg{grid-template-columns:1fr}.di:nth-child(odd),.di:nth-child(even){border-right:none}.di:last-child{border-bottom:none}.tab{font-size:12px;padding:10px 12px}.brand{font-size:25px}}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="lr">
+    <div class="lb">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <path d="M6 5L6 19Q6 25 15 25" stroke="white" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+        <path d="M6 5L11.5 10.5" stroke="white" stroke-width="3.2" stroke-linecap="round"/>
+        <circle cx="21" cy="19" r="6.5" fill="#ff5a5f"/>
+        <circle cx="21" cy="19" r="2.2" fill="white"/>
+      </svg>
+    </div>
+    <div class="brand">utello<span>.</span></div>
+  </div>
+  <div class="tag">Influencer Intelligence, Simplified</div>
+</header>
+<div class="app">
+  <div class="tabs">
+    <button class="tab on" onclick="swTab('eng',this)">Engagement Calculator</button>
+    <button class="tab" onclick="swTab('rate',this)">Rate Calculator</button>
+  </div>
+
+  <!-- PANEL 1 -->
+  <div class="panel on" id="panel-eng">
+    <div class="card">
+      <div class="sl">Platform and Audience</div>
+      <div class="g">
+        <div class="fg"><label for="ep">Platform</label>
+          <select id="ep"><option value="instagram">Instagram</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="twitter">Twitter / X</option><option value="linkedin">LinkedIn</option></select></div>
+        <div class="fg"><label for="ef">Total Followers</label><input type="number" id="ef" placeholder="e.g. 85000" min="1"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sl">Post Metrics (average per post)</div>
+      <div class="g">
+        <div class="fg"><label for="elk">Likes</label><input type="number" id="elk" placeholder="e.g. 3200" min="0"></div>
+        <div class="fg"><label for="ecm">Comments</label><input type="number" id="ecm" placeholder="e.g. 240" min="0"></div>
+        <div class="fg"><label for="esh">Shares / Saves</label><input type="number" id="esh" placeholder="Optional" min="0"><span class="hint">Optional, improves accuracy</span></div>
+        <div class="fg"><label for="evw">Views</label><input type="number" id="evw" placeholder="Optional" min="0"><span class="hint">Shown for context only</span></div>
+      </div>
+      <button class="btn-p" onclick="calcEng()">Calculate Engagement Rate</button>
+    </div>
+    <div id="eng-res" class="hide rw">
+      <div class="rcs">
+        <div class="rct"><div class="rctt">Engagement Analysis</div>
+          <button class="btn-g" onclick="cpEng()"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Copy Results</button>
+        </div>
+        <div class="rcb">
+          <div class="erh"><div class="erb" id="er-n">0.00%</div><div class="ers">Engagement Rate</div><div id="er-b"></div></div>
+          <div class="sts">
+            <div class="sb"><div class="sbl">Platform</div><div class="sbv" id="er-sp">-</div></div>
+            <div class="sb"><div class="sbl">Interactions</div><div class="sbv" id="er-si">-</div></div>
+            <div class="sb"><div class="sbl">Followers</div><div class="sbv" id="er-sf">-</div></div>
+            <div class="sb"><div class="sbl">Avg Benchmark</div><div class="sbv" id="er-sb2">-</div></div>
+          </div>
+          <div class="bw"><div class="bt">Performance vs platform scale</div>
+            <div class="btr"><div class="bf" id="er-f"></div></div>
+            <div class="bls"><span>Poor</span><span>Average</span><span>Good</span><span>Excellent</span><span>Viral</span></div>
+          </div>
+          <div class="ins" id="er-ins"></div>
+          <div class="xr"><button class="btn-t" onclick="xfer()">Transfer to Rate Calculator<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2 -->
+  <div class="panel" id="panel-rate">
+    <div class="card">
+      <div class="sl">Influencer Profile</div>
+      <div class="g">
+        <div class="fg"><label for="rp">Platform</label>
+          <select id="rp"><option value="instagram">Instagram</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="twitter">Twitter / X</option><option value="linkedin">LinkedIn</option></select></div>
+        <div class="fg"><label for="rf">Total Followers</label><input type="number" id="rf" placeholder="e.g. 85000" min="1"></div>
+        <div class="fg"><label for="re">Engagement Rate (%)</label><input type="number" id="re" placeholder="e.g. 4.8" min="0" step="0.01"><span class="hint" id="reh">Use Tool 1 to auto-fill this</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sl">Content and Market</div>
+      <div class="g">
+        <div class="fg"><label for="rc">Content Type</label>
+          <select id="rc"><option value="story">Story</option><option value="post">Feed Post / Tweet</option><option value="reel">Reel / Short-form Video</option><option value="video">Long-form Video / YouTube</option><option value="newsletter">Newsletter</option></select></div>
+        <div class="fg"><label for="rn">Niche</label>
+          <select id="rn"><option value="finance">Finance</option><option value="tech">Tech</option><option value="fitness">Fitness</option><option value="fashion">Fashion</option><option value="food">Food</option><option value="lifestyle">Lifestyle</option><option value="other">Other</option></select></div>
+        <div class="fg"><label for="rl">Location Tier</label>
+          <select id="rl"><option value="t1">Tier 1 (US, UK, AU)</option><option value="t2">Tier 2 (EU, CA)</option><option value="t3">Tier 3 (Other)</option></select></div>
+        <div class="fg"><label for="rpt">Number of Posts</label>
+          <select id="rpt"><option value="1">1 post</option><option value="2">2 posts</option><option value="3">3 posts</option><option value="4">4 posts</option><option value="5">5 posts</option></select></div>
+      </div>
+      <div class="tog">
+        <div><div class="tl1">Usage Rights</div><div class="tl2">Brand reuses your content in ads or other channels</div></div>
+        <label class="sw"><input type="checkbox" id="ru"><span class="tk"></span></label>
+      </div>
+      <button class="btn-p" onclick="calcRate()">Generate Rate Card</button>
+    </div>
+    <div id="rate-res" class="hide rw">
+      <div class="rcs">
+        <div class="rct"><div class="rctt">Rate Card</div>
+          <button class="btn-g" onclick="cpRate()"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 11H2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Copy Rate Card</button>
+        </div>
+        <div class="rcb">
+          <div class="rh"><div class="rhl">utello influencer suite</div><div class="rhb" id="rc-a">$0</div><div class="rhs" id="rc-s">Calculated Rate</div><div class="rhv">Actual rates may vary by plus or minus 10%</div></div>
+          <div class="dg" id="rc-dg"></div>
+          <div class="bdt">Rate Calculation Breakdown</div>
+          <table class="bdd" id="rc-bd"></table>
+          <div id="rc-mw" class="hide"><div class="bdt">Multi-post Pricing</div><div class="mpw" id="rc-mp"></div></div>
+          <div class="disc">Rates are calculated using industry benchmark data. Actual rates may vary based on negotiation, audience quality, and campaign specifics.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="tst">Copied!</div>
+<script>
+const BENCH={instagram:{poor:1,avg:3,good:6,excel:10,lbl:'Instagram'},tiktok:{poor:3,avg:8,good:15,excel:25,lbl:'TikTok'},youtube:{poor:2,avg:5,good:10,excel:20,lbl:'YouTube'},twitter:{poor:0.5,avg:1,good:3,excel:5,lbl:'Twitter / X'},linkedin:{poor:1,avg:3,good:6,excel:10,lbl:'LinkedIn'}};
+const getTier=f=>f<10000?{lbl:'Nano (1K to 10K)',cpm:18}:f<100000?{lbl:'Micro (10K to 100K)',cpm:13}:f<500000?{lbl:'Macro (100K to 500K)',cpm:8}:f<1000000?{lbl:'Mega (500K to 1M)',cpm:5}:{lbl:'Celebrity (1M+)',cpm:3};
+const CNT={story:{m:.5,lbl:'Story'},post:{m:1,lbl:'Feed Post / Tweet'},reel:{m:1.6,lbl:'Reel / Short-form Video'},video:{m:2.2,lbl:'Long-form Video / YouTube'},newsletter:{m:1.3,lbl:'Newsletter'}};
+const NCH={finance:{m:1.5,lbl:'Finance'},tech:{m:1.5,lbl:'Tech'},fitness:{m:1.2,lbl:'Fitness'},fashion:{m:1.2,lbl:'Fashion'},food:{m:1,lbl:'Food'},lifestyle:{m:1,lbl:'Lifestyle'},other:{m:1,lbl:'Other'}};
+const LOC={t1:{m:1.3,lbl:'Tier 1 (US, UK, AU)'},t2:{m:1.1,lbl:'Tier 2 (EU, CA)'},t3:{m:.8,lbl:'Tier 3 (Other)'}};
+const EM={poor:{m:.7,lbl:'Poor'},average:{m:.9,lbl:'Average'},good:{m:1,lbl:'Good'},excellent:{m:1.25,lbl:'Excellent'},viral:{m:1.5,lbl:'Viral'}};
+const DISC=[1,.85,.75,.65,.65];
+const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toLocaleString();
+const usd=n=>'$'+Math.round(n).toLocaleString();
+function qual(er,pl){const b=BENCH[pl];if(er<b.poor)return{k:'poor',lbl:'Poor',cls:'qp',col:'#f87171'};if(er<b.avg)return{k:'average',lbl:'Average',cls:'qa',col:'#fbbf24'};if(er<b.good)return{k:'good',lbl:'Good',cls:'qg',col:'#4ade80'};if(er<b.excel)return{k:'excellent',lbl:'Excellent',cls:'qe',col:'#a5b4fc'};return{k:'viral',lbl:'Viral',cls:'qv',col:'#ff5a5f'};}
+function ins(er,pl,q){const b=BENCH[pl],p=b.lbl,pct=er.toFixed(2);if(q.k==='poor')return`Your ${pct}% engagement on ${p} falls below the platform average of ${b.poor}%. Focus on community interaction, posting consistency, and content that drives saves and comments to lift your rate.`;if(q.k==='average')return`At ${pct}% on ${p}, you are tracking with the platform average. Lean into your strongest content formats and engage proactively in your niche to push into the Good tier.`;if(q.k==='good')return`A ${pct}% engagement rate on ${p} puts you well above most creators. Brands prioritize accounts in this range for authentic campaigns. Your rate card should reflect this edge.`;if(q.k==='excellent')return`Excellent performance. At ${pct}% on ${p}, you are in the top bracket. You can justify premium rates and should target long-term brand partnerships.`;return`Viral-tier engagement at ${pct}% on ${p}. This is rare and highly sought-after. Your audience connection commands maximum multipliers across all content types.`;}
+function aN(el,t,s,d,dur){const st=performance.now();const f=n=>{const p=Math.min((n-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=(t*e).toFixed(d)+s;if(p<1)requestAnimationFrame(f);else el.textContent=t.toFixed(d)+s;};requestAnimationFrame(f);}
+function aU(el,t,dur){const st=performance.now();const f=n=>{const p=Math.min((n-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=usd(Math.round(t*e));if(p<1)requestAnimationFrame(f);else el.textContent=usd(Math.round(t));};requestAnimationFrame(f);}
+function toast(m){const t=document.getElementById('tst');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function swTab(id,btn){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('panel-'+id).classList.add('on');}
+function calcEng(){
+  const pl=document.getElementById('ep').value,fo=parseFloat(document.getElementById('ef').value)||0,lk=parseFloat(document.getElementById('elk').value)||0,cm=parseFloat(document.getElementById('ecm').value)||0,sh=parseFloat(document.getElementById('esh').value)||0;
+  if(fo<1){alert('Please enter a valid follower count.');return;}
+  if(!lk&&!cm){alert('Please enter at least likes or comments.');return;}
+  const inter=lk+cm+sh,er=(inter/fo)*100,q=qual(er,pl),b=BENCH[pl];
+  window._eng={er,pl,fo,q};
+  const w=document.getElementById('eng-res');w.classList.remove('hide');w.scrollIntoView({behavior:'smooth',block:'nearest'});
+  aN(document.getElementById('er-n'),er,'%',2,900);
+  document.getElementById('er-b').innerHTML=`<span class="qb ${q.cls}">${q.lbl}</span>`;
+  document.getElementById('er-sp').textContent=b.lbl;
+  document.getElementById('er-si').textContent=inter.toLocaleString();
+  document.getElementById('er-sf').textContent=fmt(fo);
+  document.getElementById('er-sb2').textContent=b.poor+'% to '+b.avg+'%';
+  const fill=document.getElementById('er-f');fill.style.background=q.col;
+  setTimeout(()=>{fill.style.width=Math.min((er/(b.excel*2))*100,100)+'%';},80);
+  document.getElementById('er-ins').textContent=ins(er,pl,q);
+  window._engT=['UTELLO INFLUENCER SUITE | Engagement Analysis','','Engagement Rate: '+er.toFixed(2)+'% ('+q.lbl+')','Platform: '+b.lbl,'Total Interactions: '+inter.toLocaleString(),'Followers: '+fmt(fo),'','Insight: '+ins(er,pl,q),'','Generated by Utello Influencer Suite'].join('\n');
+}
+function xfer(){
+  if(!window._eng)return;
+  const{er,pl,fo}=window._eng;
+  document.getElementById('re').value=er.toFixed(2);
+  document.getElementById('rp').value=pl;
+  document.getElementById('rf').value=fo;
+  const h=document.getElementById('reh');h.textContent='Auto-filled from Engagement Calculator';h.classList.add('ok');
+  swTab('rate',document.querySelectorAll('.tab')[1]);
+}
+function calcRate(){
+  const pl=document.getElementById('rp').value,fo=parseFloat(document.getElementById('rf').value)||0,erI=parseFloat(document.getElementById('re').value),cn=document.getElementById('rc').value,nc=document.getElementById('rn').value,lc=document.getElementById('rl').value,pts=parseInt(document.getElementById('rpt').value),use=document.getElementById('ru').checked;
+  if(fo<1){alert('Please enter a valid follower count.');return;}
+  if(isNaN(erI)||erI<0){alert('Please enter a valid engagement rate. Use Tool 1 to calculate it.');return;}
+  const tier=getTier(fo),base=(fo/1000)*tier.cpm,cM=CNT[cn].m,nM=NCH[nc].m,lM=LOC[lc].m,q=qual(erI,pl),eM=EM[q.k].m,uM=use?1.35:1,single=base*cM*nM*lM*eM*uM;
+  let total=0;const pR=[];
+  for(let i=0;i<pts;i++){const d=DISC[i],pr=single*d;pR.push({n:i+1,d,pr});total+=pr;}
+  const w=document.getElementById('rate-res');w.classList.remove('hide');w.scrollIntoView({behavior:'smooth',block:'nearest'});
+  aU(document.getElementById('rc-a'),total,900);
+  document.getElementById('rc-s').textContent=pts===1?'Calculated Rate (Single Post)':'Calculated Rate ('+pts+' Posts Total)';
+  const dItems=[['Platform',BENCH[pl].lbl],['Followers',fmt(fo)+' ('+tier.lbl+')'],['Content Type',CNT[cn].lbl],['Niche',NCH[nc].lbl],['Engagement',erI.toFixed(2)+'% ('+q.lbl+')'],['Location',LOC[lc].lbl],['Usage Rights',use?'Yes (+35%)':'No'],['Posts',pts+(pts>1?' (bulk discount applied)':'')]];
+  document.getElementById('rc-dg').innerHTML=dItems.map(([k,v])=>`<div class="di"><div class="dik">${k}</div><div class="div2">${v}</div></div>`).join('');
+  let run=base;
+  const rows=[
+    brow('1','Base Rate',tier.lbl+' at $'+tier.cpm+' CPM',usd(run),''),
+    brow('2','Content Multiplier',CNT[cn].lbl+' ('+cM+'x)',usd(run*=cM),''),
+    brow('3','Niche Multiplier',NCH[nc].lbl+' ('+nM+'x)',usd(run*=nM),''),
+    brow('4','Location Multiplier',LOC[lc].lbl+' ('+lM+'x)',usd(run*=lM),''),
+    brow('5','Engagement Multiplier',q.lbl+' ('+eM+'x)',usd(run*=eM),''),
+    use?brow('6','Usage Rights','Licensed (1.35x)',usd(run*=1.35),''):'',
+    brow(use?'7':'6','Single Post Rate','','',usd(single))
+  ].join('');
+  document.getElementById('rc-bd').innerHTML=rows;
+  if(pts>1){
+    const mw=document.getElementById('rc-mw');mw.classList.remove('hide');
+    let mh=pR.map(p=>`<div class="mpr"><span class="mpl">Post ${p.n} (${Math.round(p.d*100)}%)</span><span class="mpv">${usd(p.pr)}</span></div>`).join('');
+    mh+=`<div class="mpr"><span class="mpl">Total Campaign Rate</span><span class="mpv">${usd(total)}</span></div>`;
+    document.getElementById('rc-mp').innerHTML=mh;
+  } else {document.getElementById('rc-mw').classList.add('hide');}
+  const lines=['UTELLO INFLUENCER SUITE | Rate Card','=========================================','','CALCULATED RATE: '+usd(total),'Variance: Actual rates may vary by plus or minus 10%','','PROFILE','Platform:      '+BENCH[pl].lbl,'Followers:     '+fmt(fo)+' ('+tier.lbl+')','Content Type:  '+CNT[cn].lbl,'Niche:         '+NCH[nc].lbl,'Engagement:    '+erI.toFixed(2)+'% ('+q.lbl+')','Location:      '+LOC[lc].lbl,'Usage Rights:  '+(use?'Yes (+35%)':'No'),'Posts:         '+pts,'','CALCULATION BREAKDOWN','Base Rate (CPM '+tier.cpm+'):    '+usd(base),'After Content ('+cM+'x):         '+usd(base*cM),'After Niche ('+nM+'x):           '+usd(base*cM*nM),'After Location ('+lM+'x):        '+usd(base*cM*nM*lM),'After Engagement ('+eM+'x):      '+usd(base*cM*nM*lM*eM),use?('After Usage Rights (1.35x):  '+usd(single)):'','Single Post Rate:             '+usd(single)];
+  if(pts>1){lines.push('','MULTI-POST PRICING');pR.forEach(p=>lines.push('Post '+p.n+' ('+Math.round(p.d*100)+'%): '+usd(p.pr)));lines.push('Total: '+usd(total));}
+  lines.push('','Rates are calculated using industry benchmark data. Actual rates may vary based on negotiation, audience quality, and campaign specifics.','Generated by Utello Influencer Suite');
+  window._rateT=lines.filter(Boolean).join('\n');
+}
+function brow(s,n,note,run,res){const nh=note?`<span style="color:#3e4a68;font-size:11px;"> ${note}</span>`:'';const vc=res?`<td class="dr">${res}</td>`:`<td class="dv">${run}</td>`;return`<tr><td class="ds">${s}</td><td class="dn">${n}${nh}</td>${vc}</tr>`;}
+function cpEng(){if(!window._engT){toast('Calculate first');return;}navigator.clipboard.writeText(window._engT).then(()=>toast('Results copied!')).catch(()=>toast('Copy failed'));}
+function cpRate(){if(!window._rateT){toast('Generate a rate card first');return;}navigator.clipboard.writeText(window._rateT).then(()=>toast('Rate card copied!')).catch(()=>toast('Copy failed'));}
+</script>
+</body>
+</html>
